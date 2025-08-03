@@ -1,5 +1,9 @@
 # Cruma — Código Fuente
 
+> **ATENCIÓN**  
+> Este repositorio está sujeto a un EULA de **Todos los derechos reservados**.  
+> No es software libre y requiere autorización expresa para cualquier despliegue.
+
 Este repositorio contiene **solo** el código fuente de la aplicación Cruma, dividido en dos carpetas principales:
 
 - **backend/**: Servicio Spring Boot  
@@ -88,7 +92,12 @@ _Ninguna configuración de despliegue, Dockerfiles ni variables de entorno está
 
 ## Licencia
 
-Este proyecto está bajo la [MIT License](LICENSE) — adaptarla según tu necesidad.
+© 2025 Francisco López Mora & Nicolás Garay. Todos los derechos reservados.
+
+Nadie podrá usar, copiar, modificar, distribuir, desplegar o ejecutar
+este software en producción sin el **permiso por escrito** de los autores.
+
+Para más detalles, consulta el archivo [`LICENSE`](./LICENSE).
 
 ---
 
