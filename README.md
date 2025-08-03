@@ -13,6 +13,14 @@ _Ninguna configuración de despliegue, Dockerfiles ni variables de entorno está
 
 ---
 
+## Demo en vivo
+
+Podés probar la aplicación en producción en:
+
+**http://traffic-bones.gl.at.ply.gg:53379/**
+
+---
+
 ## Estructura del proyecto
 
 ```
@@ -28,6 +36,7 @@ _Ninguna configuración de despliegue, Dockerfiles ni variables de entorno está
 │       ├── App.jsx
 │       └── index.jsx
 ├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
@@ -45,11 +54,11 @@ _Ninguna configuración de despliegue, Dockerfiles ni variables de entorno está
 
 ### Backend (Spring Boot)
 
-1. Entra en la carpeta del backend:  
+1. Entrá en la carpeta del backend:  
    ```bash
    cd backend
    ```
-2. Compila y ejecuta:  
+2. Compilá y ejecutá:  
    ```bash
    mvn clean package
    java -jar target/cruma-0.0.1-SNAPSHOT.jar
@@ -62,11 +71,11 @@ _Ninguna configuración de despliegue, Dockerfiles ni variables de entorno está
 
 ### Frontend (React)
 
-1. Entra en la carpeta del frontend:  
+1. Entrá en la carpeta del frontend:  
    ```bash
    cd frontend
    ```
-2. Instala dependencias y levanta el servidor de desarrollo:  
+2. Instalá dependencias y levantá el servidor de desarrollo:  
    ```bash
    npm install
    npm start
@@ -77,16 +86,16 @@ _Ninguna configuración de despliegue, Dockerfiles ni variables de entorno está
 
 ## Contribuir
 
-1. Haz un **fork** de este repositorio.  
-2. Crea una rama para tu feature o corrección:  
+1. Hacé un **fork** de este repositorio.  
+2. Creá una rama para tu feature o corrección:  
    ```bash
    git checkout -b feature/nombre-de-tu-feature
    ```
-3. Realiza tus cambios, haz commits claros y súbelos:  
+3. Realizá tus cambios, hacé commits claros y subílos:  
    ```bash
    git push origin feature/nombre-de-tu-feature
    ```
-4. Abre un **Pull Request** para revisión.
+4. Abrí un **Pull Request** para revisión.
 
 ---
 
@@ -94,8 +103,8 @@ _Ninguna configuración de despliegue, Dockerfiles ni variables de entorno está
 
 - **CODEOWNERS** (`.github/CODEOWNERS`):  
   ```text
-  /backend/  @francisco-lopez-mora
-  /frontend/ @nicolas-garay
+  /backend/  @franlopezmora
+  /frontend/ @nicogaray1608
   ```
 - **ISSUE_TEMPLATE** (`.github/ISSUE_TEMPLATE.md`):  
   Captura bugs con pasos para reproducir y entorno.  
