@@ -1,0 +1,8 @@
+# Todo lo que toque el backend lo revisa Francisco
+/backend/    @francisco-lopez-mora
+
+# Todo lo que toque el frontend lo revisa Nicolás
+/frontend/   @nicolas-garay
+
+# Para cambios en configuración o docs generales
+/.github/    @francisco-lopez-mora @nicolas-garay
