@@ -90,6 +90,20 @@ _Ninguna configuración de despliegue, Dockerfiles ni variables de entorno está
 
 ---
 
+## Plantillas automáticas
+
+- **CODEOWNERS** (`.github/CODEOWNERS`):  
+  ```text
+  /backend/  @francisco-lopez-mora
+  /frontend/ @nicolas-garay
+  ```
+- **ISSUE_TEMPLATE** (`.github/ISSUE_TEMPLATE.md`):  
+  Captura bugs con pasos para reproducir y entorno.  
+- **PULL_REQUEST_TEMPLATE** (`.github/PULL_REQUEST_TEMPLATE.md`):  
+  Incluye descripción, checklist de tests y revisión de Code Owners.
+
+---
+
 ## Licencia
 
 © 2025 Francisco López Mora & Nicolás Garay. Todos los derechos reservados.
