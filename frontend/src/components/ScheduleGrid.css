@@ -1,0 +1,121 @@
+.schedule-grid-container {
+  position: relative;
+  width: 100%;         /* ancho cómodo en desktop */
+  margin: 0 auto;       /* centrada */
+}
+
+/* Retícula */
+.grid.header,
+.grid.body {
+  display: grid;
+  grid-template-columns: 60px repeat(6, 1fr); /* 1 columna de horas + 6 días */
+  position: relative;
+  z-index: 1;
+}
+
+.grid.header {
+  height: 30px;
+  margin-bottom: 7px;
+  background: #008c9e;
+  color: white;
+  align-items: center;
+}
+
+.cell.day-header {
+  text-align: center;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.cell.time-label,
+.cell.time-header {
+  display: flex;             /* usamos flex para centrar */
+  justify-content: center;   /* centrado horizontal */
+  align-items: center;       /* centrado vertical */
+  font-size: 1rem;
+  font-weight: bold;         /* negrita */
+  border-right: 1px solid rgba(0,0,0,0); /* separador opcional */
+}
+
+.hour-inner {
+  text-align: center;
+  width: 100%;   /* ocupa toda la celda */
+}
+
+.grid.body {
+  grid-auto-rows: 4.3px;; /* dejamos que la altura la controle el inline style */
+}
+
+.cell.slot {
+  border-right: 5px solid rgba(0, 0, 0, 0.295);
+}
+
+/* Overlay para bloques: absoluto sobre la retícula */
+.blocks-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+/* Bloques comunes */
+.block {
+  position: absolute;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 4px;
+  font-size: 0.5rem;
+  pointer-events: auto;
+  color: white;
+  box-shadow: 0 0 6px rgba(0,0,0,0.6); /* sombra para mayor contraste */
+  transition: transform 0.15s ease, box-shadow 0.15s ease, z-index 0.15s ease;
+}
+
+/* Bloques fijos */
+.block.fixed {
+  background: rgba(0,140,158,0.9);
+  border: 2px solid rgba(255,255,255,0.8);
+  z-index: 1;
+  opacity: 0.8;
+}
+
+/* Bloques preview */
+.block.preview {
+  background: rgba(255,165,0,0.85);
+  border: 2px dashed rgba(255, 255, 255, 0.558);
+  color: white;
+  z-index: 2;
+  cursor: pointer;
+}
+.block.preview.disabled {
+  
+  background: rgba(139, 44, 27, 0.85);
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+
+/* ====================== */
+/* 📱 RESPONSIVE AJUSTES  */
+/* ====================== */
+@media (max-width: 768px) {
+  .schedule-grid-container {
+    width: 100%;        /* usar todo el ancho en móvil */
+    margin: 0;          /* sin margen */
+    overflow-x: auto;   /* permitir scroll horizontal */
+  }
+
+  .grid.header,
+  .grid.body {
+    min-width: 600px;   /* asegura que las columnas tengan espacio mínimo */
+    grid-template-columns: 40px repeat(6, 1fr); /* horas más angostas */
+  }
+
+  .cell.time-label,
+  .cell.time-header,
+  .cell.day-header {
+    font-size: 0.8rem;  /* texto más chico en móvil */
+  }
+}

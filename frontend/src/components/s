@@ -1,0 +1,73 @@
+// src/components/ScheduleGrid.jsx
+import React from 'react'
+import './ScheduleGrid.css'
+
+// Días y horas fijas
+const days = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado']
+const hours = Array.from({ length: 16 }, (_, i) => 8 + i) // 8:00 a 23:00
+
+/**
+ * ScheduleGrid dibuja un cronograma vacío con días y horas.
+ * Props:
+ * - fixedBlocks: [{ dia, horaEntrada, horaSalida, render: <YourJSX/> }]
+ * - previewBlocks: mismo formato que fixedBlocks
+ */
+export default function ScheduleGrid({ fixedBlocks = [], previewBlocks = [] }) {
+  return (
+    <div className="schedule-container">
+      {/* Header: columna vacía para horas + 6 días */}
+      <div className="schedule-header">
+        <div className="schedule-time-cell"></div>
+        {days.map(day => (
+          <div key={day} className="schedule-day-cell">
+            {day.charAt(0).toUpperCase() + day.slice(1)}
+          </div>
+        ))}
+      </div>
+
+      {/* Body: cada hora + celda por día */}
+      <div className="schedule-body">
+        {hours.map(hour => (
+          <React.Fragment key={hour}>
+            <div className="schedule-time-label">{`${hour}:00`}</div>
+            {days.map(day => (
+              <div key={`${day}-${hour}`} className="schedule-cell" />
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
+
+      {/* Futuros bloques fijos (position: absolute) */}
+      {fixedBlocks.map((blk, i) => (
+        <div
+          key={i}
+          className="schedule-block fixed"
+          style={{
+            top: `${(blk.horaEntrada.split(':')[0] - 8) * 60 + (Number(blk.horaEntrada.split(':')[1]) / 60 * 60)}px`,
+            height: `${((Number(blk.horaSalida.split(':')[0]) + Number(blk.horaSalida.split(':')[1]) / 60) - 8) * 60}px`,
+            left: `${60 + days.indexOf(blk.dia) * (100 / 7)}%`,
+            width: `${100 / 7}%`
+          }}
+        >
+          {blk.render}
+        </div>
+      ))}
+
+      {/* Bloques de preview */}
+      {previewBlocks.map((blk, i) => (
+        <div
+          key={i}
+          className="schedule-block preview"
+          style={{
+            top: `${(blk.horaEntrada.split(':')[0] - 8) * 60 + (Number(blk.horaEntrada.split(':')[1]) / 60 * 60)}px`,
+            height: `${((Number(blk.horaSalida.split(':')[0]) + Number(blk.horaSalida.split(':')[1]) / 60) - 8) * 60}px`,
+            left: `${60 + days.indexOf(blk.dia) * (100 / 7)}%`,
+            width: `${100 / 7}%`
+          }}
+        >
+          {blk.render}
+        </div>
+      ))}
+    </div>
+  )
+}
