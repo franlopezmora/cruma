@@ -74,15 +74,6 @@ public class ExportarCronogramaController {
     @PostMapping("/exportar-pdf")
     public ResponseEntity<ByteArrayResource> exportarPDF(@RequestBody List<BloqueCronogramaExportDTO> bloques) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            System.out.println("=== BLOQUES RECIBIDOS PARA EXPORTAR ===");
-            for (BloqueCronogramaExportDTO b : bloques) {
-                System.out.println(
-                        b.getNombreMateria() + " | Día: " + b.getDia() +
-                                " | " + b.getHoraEntrada() + "-" + b.getHoraSalida() +
-                                " | Com: " + b.getComisionId() + " | Sec: " + b.getSeccion()
-                );
-            }
-            System.out.println("=== FIN BLOQUES ===");
 
             Document document = new Document(PageSize.A4.rotate(), 8, 8, 8, 8);
             PdfWriter writer = PdfWriter.getInstance(document, baos);
