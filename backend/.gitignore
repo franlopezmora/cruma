@@ -1,0 +1,44 @@
+# ===========================================
+# BACKEND CRUMA - Spring Boot
+# ===========================================
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Logs específicos del backend
+*.log
+logs/
+application-*.log
+
+# Archivos de configuración local
+application-local.properties
+application-dev.properties
+
+# Archivos temporales de Spring Boot
+spring.log
+spring-boot.log
+
+# Archivos de base de datos local
+*.db
+*.sqlite
+*.h2.db
+
+# Archivos de backup
+*.sql.backup
+*.sql.dump
+
+# Archivos de configuración específicos del IDE
+.idea/
+*.iml
+.vscode/
+
+# Archivos de build específicos
+build/
+out/
+
+# Archivos de test
+test-results/
+test-output/

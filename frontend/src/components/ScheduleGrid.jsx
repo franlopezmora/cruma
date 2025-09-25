@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './ScheduleGrid.css'
 
 const days  = ['lunes','martes','miércoles','jueves','viernes','sábado']
@@ -16,16 +16,53 @@ for (let h = startHour; h <= endHour; h++) {
 }
 
 export default function ScheduleGrid({
+  id,
   fixedBlocks = [],
   previewBlocks = [],
   onBlockClick,
-  onBlockRemove
+  onBlockRemove,
+  materiaScheduleInfo = {},
+  allMaterias = [],
+  allComisiones = []
 }) {
+    const [newBlocks, setNewBlocks] = useState(new Set());
+    const [previousBlocks, setPreviousBlocks] = useState([]);
+    
     const HEADER_H = 40;
     const TIME_W = 60;
     const startHour = 8
     const endHour = 23
     const stepMinutes = 5
+
+    // Detectar bloques nuevos para animación
+    useEffect(() => {
+      if (previousBlocks.length === 0) {
+        setPreviousBlocks(fixedBlocks);
+        return;
+      }
+      
+      const newBlockIds = new Set();
+      fixedBlocks.forEach(block => {
+        const blockId = `${block.materiaId}-${block.comisionId}-${block.dia}-${block.horaEntrada}`;
+        const wasPresent = previousBlocks.some(prevBlock => 
+          `${prevBlock.materiaId}-${prevBlock.comisionId}-${prevBlock.dia}-${prevBlock.horaEntrada}` === blockId
+        );
+        
+        if (!wasPresent) {
+          newBlockIds.add(blockId);
+        }
+      });
+      
+      if (newBlockIds.size > 0) {
+        setNewBlocks(newBlockIds);
+        // Limpiar la animación después de que termine
+        setTimeout(() => {
+          setNewBlocks(new Set());
+        }, 300);
+      }
+      
+      setPreviousBlocks(fixedBlocks);
+    }, [fixedBlocks, previousBlocks]);
 
     const timeSlots = []
     for (let h = startHour; h <= endHour; h++) {
@@ -40,8 +77,38 @@ export default function ScheduleGrid({
     const ROW_H = 4.3
     const COL_W = `calc((100% - ${TIME_W}px)/6)`;
 
+    // Función para renderizar el contenido de un bloque
+    const renderBlockContent = (blk, isPreview = false) => {
+      const materia = allMaterias.find(m => m.id === blk.materiaId);
+      const comision = allComisiones.find(c => c.comisionId === blk.comisionId);
+      
+      return (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%',
+          padding: '2px',
+          fontSize: '14px',
+          minHeight: '20px',
+          color: isPreview ? '#333' : '#fff'
+        }}>
+          <div style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '0.6rem', lineHeight: '1' }}>
+            {blk.horaEntrada}
+          </div>
+          <div style={{ textAlign: 'center', fontSize: '0.8rem', lineHeight: '1' }}>
+            <strong>{materia?.codigo || 'N/A'}</strong><br />
+            {comision?.seccion || 'N/A'}
+          </div>
+          <div style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '0.6rem', lineHeight: '1' }}>
+            {blk.horaSalida}
+          </div>
+        </div>
+      );
+    };
+
   return (
-    <div className="schedule-grid-container">
+    <div id={id} className="schedule-grid-container">
 
       <div className="grid header">
           <div className="cell time-header" style={{ width: TIME_W }}>
@@ -55,16 +122,22 @@ export default function ScheduleGrid({
       </div>
 
       <div className="grid body">
-        {timeSlots.map(t => (
-          <React.Fragment key={t}>
-            <div className="cell time-label" style={{ width: TIME_W, height: 3.45}}>
-              {t.endsWith(':00') ? t : ''} {/* mostramos solo las horas completas */}
-            </div>
-            {days.map(d => (
-              <div key={`${d}-${t}`} className="cell slot" />
-            ))}
-          </React.Fragment>
-        ))}
+        {timeSlots.map(t => {
+          const isHourMark = t.endsWith(':00');
+          return (
+            <React.Fragment key={t}>
+              <div className="cell time-label" style={{ width: TIME_W, height: 3.45}}>
+                {isHourMark ? t : ''} {/* mostramos solo las horas completas */}
+              </div>
+              {days.map(d => (
+                <div 
+                  key={`${d}-${t}`} 
+                  className={`cell slot ${isHourMark ? 'hour-mark' : ''}`}
+                />
+              ))}
+            </React.Fragment>
+          );
+        })}
       </div>
 
       <div className="blocks-overlay">
@@ -89,12 +162,30 @@ export default function ScheduleGrid({
           const colIdx = diaIndexMap[String(blk.dia)] ?? 0;
           const left = `calc(${TIME_W}px + ${colIdx} * ${COL_W})`;
 
+          // Verificar si esta materia tiene múltiples horarios
+          const scheduleInfo = materiaScheduleInfo[blk.materiaId] || { esMultiple: false, totalHorarios: 1, color: '#28a745' };
+          
+          // Verificar si es un bloque nuevo para la animación
+          const blockId = `${blk.materiaId}-${blk.comisionId}-${blk.dia}-${blk.horaEntrada}`;
+          const isNewBlock = newBlocks.has(blockId);
+
           return (
             <div
               key={i}
-              className="block fixed"
-              style={{ top, left, width: COL_W, height, position: 'absolute' }}
+              className={`block fixed ${isNewBlock ? 'adding' : ''}`}
+              style={{ 
+                top, 
+                left, 
+                width: COL_W, 
+                height, 
+                position: 'absolute',
+                backgroundColor: scheduleInfo.color,
+                border: scheduleInfo.esMultiple ? `2px solid ${scheduleInfo.color}` : `1px solid ${scheduleInfo.color}`,
+                boxShadow: scheduleInfo.esMultiple ? `0 0 8px ${scheduleInfo.color}80` : 'none',
+                opacity: 0.8
+              }}
             >
+              
               
               <button
                 onClick={() => onBlockRemove?.(blk.materiaId, blk.comisionId)}
@@ -118,7 +209,7 @@ export default function ScheduleGrid({
                 title="Quitar comisión"
                 tabIndex={-1}
               >X</button>
-              {blk.render}
+              {renderBlockContent(blk, false)}
             </div>
           )
         })}
@@ -164,7 +255,7 @@ export default function ScheduleGrid({
               }}
               onClick={() => !blk.disabled && onBlockClick(blk)}
             >
-              {blk.render}
+              {renderBlockContent(blk, false)}
             </div>
           )
         })}

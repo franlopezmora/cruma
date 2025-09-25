@@ -42,3 +42,599 @@
 .read-the-docs {
   color: #888;
 }
+
+/* CSS Variables */
+:root {
+  --bg: #121212;
+  --panel: #1c1c1c;
+  --panel-2: #202020;
+  --muted: #bfbfbf;
+  --text: #f3f3f3;
+  --ring: #5a5a5a;
+  --card: #191919;
+  --card-border: rgba(255,255,255,.06);
+  --shadow: 0 8px 30px rgba(0,0,0,.45);
+  --accent: #0070ff;
+  --accent-2: #5b99ff;
+  --pill-txt: #0b0b0b;
+}
+
+/* Landing Page Styles */
+.landing-page {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Main Container */
+.main-container {
+  width: min(1120px, 92vw);
+  margin-inline: auto;
+  position: relative;
+  padding: 72px 0 80px;
+}
+
+/* Background Orbits */
+.orbits {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orbit {
+  position: absolute;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 50%;
+}
+
+.o1 {
+  width: 1400px;
+  height: 1400px;
+  top: -420px;
+  right: -520px;
+}
+
+.o2 {
+  width: 1200px;
+  height: 1200px;
+  left: -580px;
+  top: 80px;
+}
+
+.o3 {
+  width: 900px;
+  height: 900px;
+  left: 46%;
+  top: 340px;
+  transform: translateX(-50%);
+}
+
+/* Header */
+.hero-header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.brand {
+  font-weight: 900;
+  font-size: clamp(36px, 5.5vw, 80px);
+  letter-spacing: .02em;
+  margin: 0;
+  color: var(--text);
+}
+
+.subtitle {
+  font-size: clamp(16px, 2vw, 24px);
+  color: #e8e8e8;
+  margin: .3rem 0 .6rem;
+  font-weight: 700;
+}
+
+.lede {
+  color: var(--muted);
+  max-width: 860px;
+  margin: .3rem auto 1.8rem;
+  line-height: 1.5;
+  font-size: clamp(14px, 1.6vw, 18px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* Calendar */
+.calendar-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 30px;
+}
+
+.calendar {
+  width: min(560px, 85vw);
+  background: #1a1a1a;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+}
+
+.calendar-head {
+  background: #252525;
+  padding: 12px 18px;
+  position: relative;
+}
+
+.rings {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.ring {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255,255,255,.28);
+  border-radius: 6px;
+  background: transparent;
+}
+
+.calendar-body {
+  background: #1a1a1a;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  border-top: 1px solid rgba(0,0,0,.35);
+}
+
+.calendar .cell {
+  height: 52px;
+  background: #2a2a2a;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.pill {
+  display: inline-grid;
+  place-content: center;
+  min-width: 56px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font: 600 16px/1 "Fira Code", monospace;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+  border: none;
+  font-weight: bold;
+}
+
+.pill.alg {
+  background: #ff6f82;
+}
+
+.pill.ami {
+  background: #9fd0ff;
+}
+
+.pill.isw {
+  background: #74d09a;
+}
+
+.pill.fi2 {
+  background: #f7d07a;
+}
+
+.pill.sof {
+  background: #b89bff;
+}
+
+.pill.dsi {
+  background: #ff85b3;
+}
+
+/* Features */
+.features {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+  margin-top: 18px;
+}
+
+@media (min-width: 900px) {
+  .features {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 20px 18px 18px;
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.card h3 {
+  font-size: clamp(18px, 2vw, 26px);
+  margin: 0 0 6px;
+  letter-spacing: .02em;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.card p {
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.55;
+  font-size: clamp(13px, 1.3vw, 15px);
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 10px;
+  opacity: .9;
+  color: var(--text);
+}
+
+/* CTA */
+.cta {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0 40px;
+}
+
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  padding: 14px 22px;
+  border-radius: 14px;
+  font-weight: 800;
+  letter-spacing: .01em;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--accent-2);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Footer */
+footer {
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+  margin-top: 32px;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* Cronograma Layout */
+.cronograma-layout {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.schedule-panel {
+  flex: 1 1 0%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  alignItems: stretch;
+  justifyContent: flex-start;
+  padding: 1.5vw 1vw 1.5vw 1.5vw;
+  box-sizing: border-box;
+}
+
+.schedule-container {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 0.5vw;
+  background: var(--panel);
+  border: 1px solid var(--card-border);
+}
+
+.sidebar-panel {
+  width: 300px;
+  min-width: 230px;
+  max-width: 33vw;
+  display: flex;
+  flex-direction: column;
+  justifyContent: flex-start;
+  alignItems: stretch;
+  border-left: 2px solid var(--card-border);
+  padding: 2vw 1vw 1vw 1vw;
+  box-sizing: border-box;
+  gap: 12px;
+  height: 100vh;
+  background: var(--panel);
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.materias-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.materia-button {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-align: left;
+  white-space: normal;
+  height: auto;
+  min-height: 3rem;
+}
+
+.materia-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+}
+
+.export-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.export-button:hover {
+  background: var(--panel-2);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-container {
+    padding: 40px 0 60px;
+  }
+  
+  .calendar {
+    width: 90vw;
+  }
+  
+  .calendar-body {
+    gap: 10px;
+    padding: 16px;
+  }
+  
+  .cell {
+    height: 50px;
+  }
+  
+  .pill {
+    min-width: 50px;
+    height: 28px;
+    font-size: 14px;
+    padding: 0 8px;
+  }
+  
+  .rings {
+    gap: 16px;
+  }
+  
+  .ring {
+    width: 24px;
+    height: 24px;
+    border-width: 3px;
+  }
+  
+  .lede {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    font-size: clamp(14px, 1.6vw, 18px);
+  }
+  
+  /* Cronograma responsive */
+  .cronograma-layout {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .schedule-panel {
+    padding: 1rem;
+    height: 60vh;
+  }
+  
+  .sidebar-panel {
+    width: 100%;
+    max-width: none;
+    border-left: none;
+    border-top: 2px solid var(--card-border);
+    height: auto;
+    min-height: 40vh;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-container {
+    padding: 30px 0 50px;
+  }
+  
+  .calendar-body {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 12px;
+  }
+  
+  .cell {
+    height: 45px;
+  }
+  
+  .pill {
+    min-width: 45px;
+    height: 25px;
+    font-size: 12px;
+    padding: 0 6px;
+  }
+  
+  .rings {
+    gap: 12px;
+  }
+  
+  .ring {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+  }
+  
+  .lede {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    font-size: clamp(13px, 1.4vw, 16px);
+  }
+  
+  /* Cronograma responsive */
+  .schedule-panel {
+    padding: 0.5rem;
+    height: 50vh;
+  }
+  
+  .sidebar-panel {
+    padding: 1rem;
+    min-height: 50vh;
+  }
+  
+  .materia-button {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Button Styles Override */
+.btn-primary {
+  background: var(--accent);
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 22px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--accent-2);
+}
+
+/* Quitar glow de todos los botones de Bootstrap */
+.btn {
+  box-shadow: none !important;
+}
+
+.btn:hover {
+  box-shadow: none !important;
+}
+
+.btn:focus {
+  box-shadow: none !important;
+}
+
+.btn:active {
+  box-shadow: none !important;
+}
+
+/* Estilos específicos para botones de la página armar */
+.btn-outline-primary {
+  box-shadow: none !important;
+  font-weight: normal !important;
+}
+
+.btn-outline-primary:hover {
+  box-shadow: none !important;
+}
+
+.btn-success {
+  box-shadow: none !important;
+  font-weight: normal !important;
+}
+
+.btn-success:hover {
+  box-shadow: none !important;
+}
+
+.btn-outline-secondary {
+  box-shadow: none !important;
+  font-weight: normal !important;
+}
+
+.btn-outline-secondary:hover {
+  box-shadow: none !important;
+}
+
+.btn-primary {
+  font-weight: normal !important;
+}
+
+/* Text Enhancements */
+.text-primary {
+  color: var(--accent) !important;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
