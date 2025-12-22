@@ -1,7 +1,6 @@
 // src/mocks/comisionesMock.js
 
 export const comisionesMock = [
-  // Análisis Matemático I (nivel 1, anual)
   {
     comisionId: 101,
     materiaId: 1,

@@ -1,0 +1,155 @@
+/* =========================================================
+   1) CONTENEDOR GENERAL DE LA PÁGINA
+   - Fondo, tipografía, alto mínimo
+   ========================================================= */
+.app-wrapper {
+  background-color: var(--bg-primary);
+  min-height: 100vh;
+  padding: 0.2rem;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.levels-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap; 
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* =========================================================
+   4) COLUMNA DE NIVEL (Nivel 1, 2, 3...)
+   - La columna NO se estira
+   - Su ancho es el de la card
+   ========================================================= */
+.level-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Título de columna */
+.level-title {
+  color: var(--text-primary);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+/* =========================================================
+   5) LISTADO DE CARDS (stack vertical)
+   ========================================================= */
+.cards-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* =========================================================
+   6) CARDS DE MATERIAS
+   - Ancho fijo para que no se vuelvan gigantes
+   ========================================================= */
+.subject-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 60px;
+  position: relative;
+  margin-bottom: 0.5rem;
+  color: black;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.5rem;
+  border-left: 4px solid transparent;
+
+  width: 200px;
+  max-width: 200px;
+}
+
+.subject-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+  z-index: 10;
+  border-color: var(--text-tertiary);
+}
+
+/* Colores de estado */
+.subject-card.estado-0 { background: #ffebee; border-left-color: #f44336; opacity: 0.8; cursor: not-allowed; }
+.subject-card.estado-1 { background: #e3f2fd; border-left-color: #2196F3; }
+.subject-card.estado-2 { background: #fff9c4; border-left-color: #FFC107; }
+.subject-card.estado-3 { background: #c8e6c9; border-left-color: #4CAF50; }
+
+/* Badge estado */
+.status-badge {
+  font-size: 0.3rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 5px;
+}
+
+.badge-0 {
+  background-color: #f44336;
+  color: white;
+}
+
+.badge-1 {
+  background-color: #2196F3;
+  color: white;
+}
+
+.badge-2 {
+  background-color: #FFC107;
+  color: black;
+}
+
+.badge-3 {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* =========================================================
+   8) TOOLTIP correlativas
+   ========================================================= */
+.correlativas-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  width: max-content;
+  max-width: 200px;
+  z-index: 20;
+  white-space: pre-wrap;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.subject-card:hover .correlativas-tooltip {
+  display: block;
+
+}
+
+.level-column-electivas {
+  width: calc(200px * 2 + 0.5rem);
+}
+
+.level-column-electivas .subject-card {
+  width: 180px;
+}
+
+.level-column-electivas .cards-stack {
+  display: grid;
+  grid-template-columns: repeat(2, 200px);
+  gap: 0.5rem;
+}

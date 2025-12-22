@@ -22,4 +22,34 @@ public interface ComisionMateriaHorarioRepository extends JpaRepository<Comision
             @Param("comisionId") Integer comisionId,
             @Param("periodoId") Integer periodoId
     );
+
+    @Query("""
+      SELECT cmh
+      FROM ComisionMateriaHorario cmh
+      WHERE cmh.comisionMateria.materia.id = :materiaId
+        AND cmh.comisionMateria.comision.id = :comisionId
+    """)
+    List<ComisionMateriaHorario> findByMateriaComision(
+            @Param("materiaId") Integer materiaId,
+            @Param("comisionId") Integer comisionId
+    );
+
+    @Query("""
+      SELECT cmh
+      FROM ComisionMateriaHorario cmh
+      WHERE cmh.comisionMateria.materia.id = :materiaId
+        AND cmh.comisionMateria.comision.id = :comisionId
+        AND cmh.comisionMateria.periodo.id = :periodoId
+        AND cmh.horario.diaSemana = :diaSemana
+        AND cmh.horario.horaInicio = :horaInicio
+        AND cmh.horario.horaFin = :horaFin
+    """)
+    java.util.Optional<ComisionMateriaHorario> findByMateriaComisionPeriodoHorario(
+            @Param("materiaId") Integer materiaId,
+            @Param("comisionId") Integer comisionId,
+            @Param("periodoId") Integer periodoId,
+            @Param("diaSemana") String diaSemana,
+            @Param("horaInicio") java.time.LocalTime horaInicio,
+            @Param("horaFin") java.time.LocalTime horaFin
+    );
 }

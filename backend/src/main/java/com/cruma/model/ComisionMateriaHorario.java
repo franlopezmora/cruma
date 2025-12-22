@@ -2,7 +2,6 @@ package com.cruma.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
 
 @Entity
 @Table(name = "comision_materia_horario")
@@ -23,6 +22,6 @@ public class ComisionMateriaHorario {
     @JoinColumn(name = "horario_id", nullable = false)
     private Horario horario;
 
-//    @OneToMany( mappedBy = "comisionMateriaHorario", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<DetalleCronograma> detalleCronograma;
+    @OneToMany(mappedBy = "comisionMateriaHorario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<DetalleCronograma> detalleCronograma;
 }

@@ -9,7 +9,9 @@ export const STORAGE_KEYS = {
   CUATRIMESTRE_SELECTED: 'cruma_cuatrimestre_selected',
   MATERIAS_SELECTED: 'cruma_materias_selected',
   CRONOGRAMA_FIXED: 'cruma_cronograma_fixed',
-  USER_PREFERENCES: 'cruma_user_preferences'
+  USER_PREFERENCES: 'cruma_user_preferences',
+  CORRELATIVAS_ESTADO: 'cruma_correlativas_estado',
+  CORRELATIVAS_CUATRI: 'cruma_correlativas_cuatri'
 };
 
 /**
@@ -76,12 +78,25 @@ export const removeFromStorage = (key) => {
 
 /**
  * Limpia todos los datos de la aplicación del localStorage
+ * Incluye datos de ambos cuatrimestres
  */
 export const clearAllAppData = () => {
   try {
+    // Limpiar claves principales
     Object.values(STORAGE_KEYS).forEach(key => {
       localStorage.removeItem(key);
     });
+    
+    // Limpiar datos de cuatrimestres (1 y 2)
+    [1, 2].forEach(cuatri => {
+      localStorage.removeItem(`${STORAGE_KEYS.MATERIAS_SELECTED}_cuatri${cuatri}`);
+      localStorage.removeItem(`${STORAGE_KEYS.CRONOGRAMA_FIXED}_cuatri${cuatri}`);
+    });
+    
+    // Limpiar correlativas
+    localStorage.removeItem(STORAGE_KEYS.CORRELATIVAS_ESTADO);
+    localStorage.removeItem(STORAGE_KEYS.CORRELATIVAS_CUATRI);
+    
     return true;
   } catch (error) {
     console.error('Error limpiando datos de la aplicación:', error);
@@ -158,32 +173,84 @@ export const getCuatrimestreSelected = () => {
 };
 
 /**
- * Guarda las materias seleccionadas
+ * Guarda las materias seleccionadas (separadas por cuatrimestre)
+ * @param {Array<number>} materiaIds - IDs de las materias seleccionadas
+ * @param {number} cuatrimestre - Cuatrimestre (1 o 2)
  */
-export const saveMateriasSelected = (materiaIds) => {
-  return saveToStorage(STORAGE_KEYS.MATERIAS_SELECTED, materiaIds);
+export const saveMateriasSelected = (materiaIds, cuatrimestre = null) => {
+  if (cuatrimestre === null) {
+    // Compatibilidad: si no se especifica cuatrimestre, usar el guardado
+    cuatrimestre = getCuatrimestreSelected();
+  }
+  
+  if (cuatrimestre === null || (cuatrimestre !== 1 && cuatrimestre !== 2)) {
+    // Si no hay cuatrimestre válido, usar la clave antigua para compatibilidad
+    return saveToStorage(STORAGE_KEYS.MATERIAS_SELECTED, materiaIds);
+  }
+  
+  const key = `${STORAGE_KEYS.MATERIAS_SELECTED}_cuatri${cuatrimestre}`;
+  return saveToStorage(key, materiaIds);
 };
 
 /**
- * Recupera las materias seleccionadas
+ * Recupera las materias seleccionadas (separadas por cuatrimestre)
+ * @param {number} cuatrimestre - Cuatrimestre (1 o 2). Si es null, intenta usar el guardado
  */
-export const getMateriasSelected = () => {
-  const result = getFromStorage(STORAGE_KEYS.MATERIAS_SELECTED, []);
+export const getMateriasSelected = (cuatrimestre = null) => {
+  if (cuatrimestre === null) {
+    // Compatibilidad: si no se especifica cuatrimestre, usar el guardado
+    cuatrimestre = getCuatrimestreSelected();
+  }
+  
+  if (cuatrimestre === null || (cuatrimestre !== 1 && cuatrimestre !== 2)) {
+    // Si no hay cuatrimestre válido, usar la clave antigua para compatibilidad
+    const result = getFromStorage(STORAGE_KEYS.MATERIAS_SELECTED, []);
+    return result && result.data !== undefined ? result.data : result;
+  }
+  
+  const key = `${STORAGE_KEYS.MATERIAS_SELECTED}_cuatri${cuatrimestre}`;
+  const result = getFromStorage(key, []);
   return result && result.data !== undefined ? result.data : result;
 };
 
 /**
- * Guarda los bloques fijados del cronograma
+ * Guarda los bloques fijados del cronograma (separados por cuatrimestre)
+ * @param {Array} fixedBlocks - Bloques fijados del cronograma
+ * @param {number} cuatrimestre - Cuatrimestre (1 o 2)
  */
-export const saveCronogramaFixed = (fixedBlocks) => {
-  return saveToStorage(STORAGE_KEYS.CRONOGRAMA_FIXED, fixedBlocks);
+export const saveCronogramaFixed = (fixedBlocks, cuatrimestre = null) => {
+  if (cuatrimestre === null) {
+    // Compatibilidad: si no se especifica cuatrimestre, usar el guardado
+    cuatrimestre = getCuatrimestreSelected();
+  }
+  
+  if (cuatrimestre === null || (cuatrimestre !== 1 && cuatrimestre !== 2)) {
+    // Si no hay cuatrimestre válido, usar la clave antigua para compatibilidad
+    return saveToStorage(STORAGE_KEYS.CRONOGRAMA_FIXED, fixedBlocks);
+  }
+  
+  const key = `${STORAGE_KEYS.CRONOGRAMA_FIXED}_cuatri${cuatrimestre}`;
+  return saveToStorage(key, fixedBlocks);
 };
 
 /**
- * Recupera los bloques fijados del cronograma
+ * Recupera los bloques fijados del cronograma (separados por cuatrimestre)
+ * @param {number} cuatrimestre - Cuatrimestre (1 o 2). Si es null, intenta usar el guardado
  */
-export const getCronogramaFixed = () => {
-  const result = getFromStorage(STORAGE_KEYS.CRONOGRAMA_FIXED, []);
+export const getCronogramaFixed = (cuatrimestre = null) => {
+  if (cuatrimestre === null) {
+    // Compatibilidad: si no se especifica cuatrimestre, usar el guardado
+    cuatrimestre = getCuatrimestreSelected();
+  }
+  
+  if (cuatrimestre === null || (cuatrimestre !== 1 && cuatrimestre !== 2)) {
+    // Si no hay cuatrimestre válido, usar la clave antigua para compatibilidad
+    const result = getFromStorage(STORAGE_KEYS.CRONOGRAMA_FIXED, []);
+    return result && result.data !== undefined ? result.data : result;
+  }
+  
+  const key = `${STORAGE_KEYS.CRONOGRAMA_FIXED}_cuatri${cuatrimestre}`;
+  const result = getFromStorage(key, []);
   return result && result.data !== undefined ? result.data : result;
 };
 
@@ -203,4 +270,34 @@ export const getUserPreferences = () => {
     showNotifications: true,
     theme: 'light'
   });
+};
+
+/**
+ * Guarda estados de correlativas (array de { materiaId, estado })
+ */
+export const saveCorrelativasEstado = (estadoMaterias) => {
+  return saveToStorage(STORAGE_KEYS.CORRELATIVAS_ESTADO, estadoMaterias);
+};
+
+/**
+ * Obtiene estados de correlativas
+ */
+export const getCorrelativasEstado = () => {
+  const result = getFromStorage(STORAGE_KEYS.CORRELATIVAS_ESTADO, []);
+  return result && result.data !== undefined ? result.data : result;
+};
+
+/**
+ * Guarda el cuatrimestre seleccionado en correlativas
+ */
+export const saveCorrelativasCuatri = (cuatrimestre) => {
+  return saveToStorage(STORAGE_KEYS.CORRELATIVAS_CUATRI, cuatrimestre);
+};
+
+/**
+ * Obtiene el cuatrimestre seleccionado en correlativas
+ */
+export const getCorrelativasCuatri = () => {
+  const result = getFromStorage(STORAGE_KEYS.CORRELATIVAS_CUATRI, null);
+  return result && result.data !== undefined ? result.data : result;
 };

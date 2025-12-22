@@ -7,7 +7,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "materia")
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Materia {
 
     @Id

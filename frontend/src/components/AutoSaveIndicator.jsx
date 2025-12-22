@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from 'react-bootstrap';
 
 /**
  * Componente que muestra un indicador de guardado automático
@@ -38,25 +37,27 @@ export default function AutoSaveIndicator({ isVisible, message = "Datos guardado
           }
         `}
       </style>
-      <Alert
-        variant="success"
+      <div
         style={{
           position: position === "inline" ? 'absolute' : 'fixed',
-          top: position === "inline" ? '-5px' : '60px',
+          top: position === "inline" ? '-5px' : '140px',
           right: position === "inline" ? '-300px' : '20px',
           zIndex: 9999,
-          fontSize: '0.8rem',
-          padding: '8px 12px',
+          fontSize: '0.8125rem',
+          padding: '0.5rem 0.75rem',
           borderRadius: '6px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+          boxShadow: '0 2px 8px var(--shadow)',
           animation: 'slideIn 0.3s ease-out',
           margin: '0',
           display: position === "inline" ? 'inline-block' : 'block',
-          whiteSpace: 'nowrap'
+          whiteSpace: 'nowrap',
+          backgroundColor: 'rgba(34, 197, 94, 0.1)',
+          border: '1px solid rgba(34, 197, 94, 0.3)',
+          color: '#22c55e'
         }}
       >
         ✅ {message}
-      </Alert>
+      </div>
     </>
   );
 }

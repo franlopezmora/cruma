@@ -6,9 +6,9 @@ export function useMaterias(){
     return materiasMock;
 }
 
-//export function useMaterias(){
-   // return useQuery({
-   //     queryKey: ['materias'],
-  //      queryFn: fetchMaterias
-  //  })
-//}
+export function useMaterias(){
+    return useQuery({
+        queryKey: ['materias'],
+        queryFn: fetchMaterias()
+    })
+}

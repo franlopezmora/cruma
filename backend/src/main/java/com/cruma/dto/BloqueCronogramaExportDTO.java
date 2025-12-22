@@ -1,7 +1,6 @@
 package com.cruma.dto;
 
-import lombok.*;
-public class BloqueCronogramaExportDTO{
+public class BloqueCronogramaExportDTO {
     private int dia;
     private String horaEntrada;
     private String horaSalida;
@@ -22,7 +21,7 @@ public class BloqueCronogramaExportDTO{
         return horaEntrada;
     }
 
-    public void setHoraEtnrada(String horaEntrada) {
+    public void setHoraEntrada(String horaEntrada) {
         this.horaEntrada = horaEntrada;
     }
 

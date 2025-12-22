@@ -1,11 +1,15 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-sans),
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,40 +17,91 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.btn-group .btn.active,
-.btn-group .btn:active {
-  background-color: #0d6efd;   /* o el color de tu variant “primary” */
-  color: #fff;
-  border-color: #0d6efd;
+/* Variables CSS para Light Mode */
+:root,
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --border-color: #e5e7eb;
+  --border-color-light: #f3f4f6;
+  --accent-color: #3b82f6;
+  --accent-hover: #2563eb;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-lg: rgba(0, 0, 0, 0.15);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* Variables CSS para Dark Mode */
+[data-theme="dark"] {
+  --bg-primary: #0c0c0c;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #242424;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color-light: rgba(255, 255, 255, 0.06);
+  --accent-color: #60a5fa;
+  --accent-hover: #3b82f6;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-lg: rgba(0, 0, 0, 0.5);
 }
 
-.form-check-input {
-  vertical-align: middle;
-  /* opcional: ajusta un poco el margin-top si necesita un empujoncito */
-  margin-top: -0.08em;
-  margin-right: 0.5em;
+html {
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  max-width: 100%;
+  /* Mantiene reservado el espacio del scrollbar para evitar saltos al abrir modales */
+  scrollbar-gutter: stable;
+}
+
+/* Evitar padding extra que añade React-Bootstrap al abrir modales (mueve la vista) */
+body.modal-open,
+body[data-rr-ui-modal-open="true"] {
+  padding-right: 0 !important;
+}
+
+.btn-group .btn.active,
+.btn-group .btn:active {
+  background-color: var(--accent-color);
+  color: #fff;
+  border-color: var(--accent-color);
+}
+
+a {
+  font-weight: 500;
+  color: var(--accent-color);
+  text-decoration: inherit;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+.form-check-input {
+  vertical-align: middle;
+  margin-top: -0.08em;
+  margin-right: 0.5em;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  color: var(--text-primary);
 }
 
 button {
@@ -56,27 +111,18 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+button:hover {
+  border-color: var(--accent-color);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
 }

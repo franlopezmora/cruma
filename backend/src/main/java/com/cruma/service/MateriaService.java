@@ -16,9 +16,9 @@ public class MateriaService {
     private final ComisionMateriaRepository cmRepo;
 
     public MateriaService(MateriaRepository materiaRepo,
-                          ComisionMateriaRepository cmRepo) {
-        this.materiaRepo  = materiaRepo;
-        this.cmRepo       = cmRepo;
+            ComisionMateriaRepository cmRepo) {
+        this.materiaRepo = materiaRepo;
+        this.cmRepo = cmRepo;
     }
 
     public List<MateriaDTO> listarTodas() {
@@ -45,8 +45,7 @@ public class MateriaService {
                 m.getCodigo(),
                 m.getNombre(),
                 m.getAnioCarrera(),
-                m.getElectiva()
-        );
+                m.getElectiva());
     }
 
     public List<MateriaDTO> listarPorIds(List<Integer> ids) {
