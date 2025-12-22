@@ -17,7 +17,7 @@ _Ninguna configuración de despliegue, Dockerfiles ni variables de entorno está
 
 Podés probar la aplicación en producción en:
 
-**http://traffic-bones.gl.at.ply.gg:53379/**
+**https://www.cruma.app/**
 
 ---
 
