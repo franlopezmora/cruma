@@ -16,6 +16,8 @@ import {
 } from "../utils/localStorage";
 import AppButton from "../components/AppButton";
 import AppModal from "../components/AppModal";
+import { USE_MOCKS } from "../utils/env";
+import { comisionesMock } from "../mocks/comisionesMock";
 
 export const Correlativas = () => {
     const [selectedMaterias, setSelectedMaterias] = useState([]);
@@ -249,9 +251,15 @@ export const Correlativas = () => {
         try {
             const promesas = puedeCursarIds.map(async (materiaId) => {
                 try {
-                    const res = await fetch(`${apiUrl}/api/materias/${materiaId}/comisiones`);
-                    if (!res.ok) return null;
-                    const comisiones = await res.json();
+                    let comisiones = [];
+
+                    if (USE_MOCKS) {
+                        comisiones = comisionesMock.filter(c => c.materiaId === materiaId);
+                    } else {
+                        const res = await fetch(`${apiUrl}/api/materias/${materiaId}/comisiones`);
+                        if (!res.ok) return null;
+                        comisiones = await res.json();
+                    }
 
                     const tieneHorarios = comisiones.some(c =>
                         c.periodo === selectedCuatri || c.periodo === 0

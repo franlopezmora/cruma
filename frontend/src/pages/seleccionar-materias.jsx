@@ -20,6 +20,8 @@ import {
 } from "../utils/localStorage";
 import AppModal from "../components/AppModal";
 import { Calendar } from "lucide-react";
+import { USE_MOCKS } from "../utils/env";
+import { materiasMockApi } from "../mocks/materiasMocks";
 
 export default function SeleccionarMaterias() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,6 +79,12 @@ export default function SeleccionarMaterias() {
 
   // 🔥 Cargar carreras al montar
   useEffect(() => {
+    if (USE_MOCKS) {
+      setCarreras([
+        { id: 1, codigo: "K", nombre: "Ingeniería en Sistemas (mock)" }
+      ]);
+      return;
+    }
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
     fetch(`${apiUrl}/api/carreras`)
       .then((res) => {
@@ -182,6 +190,13 @@ export default function SeleccionarMaterias() {
 
     setIsLoading(true);
     setIsError(false);
+
+    if (USE_MOCKS) {
+      // Para el modo mock devolvemos todas las materias de ejemplo
+      setMaterias(materiasMockApi);
+      setIsLoading(false);
+      return;
+    }
 
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
     Promise.all([

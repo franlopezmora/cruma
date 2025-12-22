@@ -1,10 +1,13 @@
 import { Container } from "react-bootstrap";
-import { FaGoogle, FaGithub } from "react-icons/fa";
+import { FaGoogle, FaGithub, FaUserCheck } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import AppButton from "../components/AppButton";
+import { USE_MOCKS } from "../utils/env";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loginDemo } = useAuth();
+  const navigate = useNavigate();
 
   const handleLoginGoogle = () => {
     window.location.href = "/oauth2/authorization/google";
@@ -12,6 +15,11 @@ export default function LoginPage() {
 
   const handleLoginGithub = () => {
     window.location.href = "/oauth2/authorization/github";
+  };
+
+  const handleLoginDemo = () => {
+    loginDemo?.();
+    navigate("/");
   };
 
   return (
@@ -118,23 +126,38 @@ export default function LoginPage() {
                   gap: "0.75rem",
                 }}
               >
-                <AppButton
-                  onClick={handleLoginGoogle}
-                  variant="primary"
-                  style={{ width: "100%" }}
-                >
-                  <FaGoogle size={16} />
-                  <span>Continuar con Google</span>
-                </AppButton>
+                {!USE_MOCKS && (
+                  <>
+                    <AppButton
+                      onClick={handleLoginGoogle}
+                      variant="primary"
+                      style={{ width: "100%" }}
+                    >
+                      <FaGoogle size={16} />
+                      <span>Continuar con Google</span>
+                    </AppButton>
 
-                <AppButton
-                  onClick={handleLoginGithub}
-                  variant="default"
-                  style={{ width: "100%" }}
-                >
-                  <FaGithub size={16} />
-                  <span>Continuar con GitHub</span>
-                </AppButton>
+                    <AppButton
+                      onClick={handleLoginGithub}
+                      variant="default"
+                      style={{ width: "100%" }}
+                    >
+                      <FaGithub size={16} />
+                      <span>Continuar con GitHub</span>
+                    </AppButton>
+                  </>
+                )}
+
+                {USE_MOCKS && (
+                  <AppButton
+                    onClick={handleLoginDemo}
+                    variant="primary"
+                    style={{ width: "100%" }}
+                  >
+                    <FaUserCheck size={16} />
+                    <span>Entrar en modo demo</span>
+                  </AppButton>
+                )}
               </div>
             )}
           </div>

@@ -18,6 +18,9 @@ import { useErrorHandler } from '../hooks/useErrorHandler'
 import { logger } from '../utils/logger'
 import { convertirNombreADia } from '../utils/dateUtils'
 import AppModal from '../components/AppModal'
+import { USE_MOCKS } from '../utils/env'
+import { materiasMockApi } from '../mocks/materiasMocks'
+import { comisionesMock } from '../mocks/comisionesMock'
 
 // Estilos para el PDF
 const styles = StyleSheet.create({
@@ -608,6 +611,11 @@ export default function Armar() {
 
   useEffect(() => {
     if (materiaIds.length > 0) {
+      if (USE_MOCKS) {
+        const data = materiasMockApi.filter(m => materiaIds.includes(m.id));
+        setAllMaterias(data);
+        return;
+      }
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
       const params = materiaIds.join(',');
       fetch(`${apiUrl}/api/materias/seleccionadas?ids=${params}`)
@@ -628,10 +636,15 @@ export default function Armar() {
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
         const comisionesAcumuladas = [];
         for (let materiaId of materiaIds) {
-          const res = await fetch(
-            `${apiUrl}/api/materias/${materiaId}/comisiones`
-          );
-          const data = await res.json();
+          let data = [];
+          if (USE_MOCKS) {
+            data = comisionesMock.filter(c => c.materiaId === materiaId);
+          } else {
+            const res = await fetch(
+              `${apiUrl}/api/materias/${materiaId}/comisiones`
+            );
+            data = await res.json();
+          }
           // Transformar los horarios: convertir diaSemana (nombre) a dia (número)
           const comisionesTransformadas = data.map(comision => ({
             ...comision,

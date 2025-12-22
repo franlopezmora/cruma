@@ -84,6 +84,28 @@ Podés probar la aplicación en producción en:
 
 ---
 
+### Frontend en modo demo (sin backend)
+
+- Por defecto, el frontend está configurado para usar **mocks locales** y no llamar a la API.  
+- La bandera `VITE_USE_MOCKS` se lee en `frontend/src/utils/env.js`:
+  - Sin definirla (valor por defecto) o en `true` ⇒ usa datos mock (materias, correlativas, comisiones y auth demo).
+  - En `false` ⇒ usa el backend real.
+- Para ejecutar en modo demo basta con:
+  ```bash
+  cd frontend
+  npm install
+  npm run dev
+  ```
+  y navegar a `http://localhost:3000`.
+- Para apuntar a un backend, definir en tu entorno:
+  ```bash
+  set VITE_USE_MOCKS=false          # Windows (cmd)
+  export VITE_USE_MOCKS=false       # macOS/Linux
+  ```
+  y opcionalmente `VITE_API_URL` con la URL de tu API.
+
+---
+
 ## Contribuir
 
 1. Hacé un **fork** de este repositorio.  

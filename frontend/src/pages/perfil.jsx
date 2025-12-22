@@ -8,6 +8,7 @@ import { Spinner } from 'react-bootstrap';
 import AppButton from '../components/AppButton';
 import AppModal from '../components/AppModal';
 import { Calendar } from 'lucide-react';
+import { USE_MOCKS } from '../utils/env';
 
 export default function Perfil() {
   const { usuario, isAuthenticated, logout } = useAuth();
@@ -39,6 +40,21 @@ export default function Perfil() {
   }, [isAuthenticated, navigate]);
 
   const cargarCronogramas = async () => {
+    if (USE_MOCKS) {
+      setCronogramas([
+        {
+          id: 1,
+          nombre: 'Cronograma Demo',
+          creadoEn: new Date().toISOString(),
+          detalles: [
+            { materiaId: 1, comisionId: 101, dia: '1', horaEntrada: '08:00', horaSalida: '10:00' },
+            { materiaId: 2, comisionId: 201, dia: '3', horaEntrada: '10:30', horaSalida: '12:30' }
+          ]
+        }
+      ]);
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       setError(null);
@@ -54,6 +70,18 @@ export default function Perfil() {
 
   const cargarEstadoCorrelativas = async () => {
     if (!isAuthenticated) return;
+    if (USE_MOCKS) {
+      setEstadoCorrelativas({
+        resumen: {
+          aprobadas: 2,
+          regulares: 1,
+          restantes: 3
+        },
+        ultimaActualizacion: new Date().toISOString()
+      });
+      setLoadingCorrelativas(false);
+      return;
+    }
     try {
       setLoadingCorrelativas(true);
       setErrorCorrelativas(null);

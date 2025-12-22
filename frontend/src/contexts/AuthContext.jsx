@@ -1,14 +1,26 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { api } from '../api/axios';
 import { logger } from '../utils/logger';
+import { USE_MOCKS } from '../utils/env';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(true);
+  const demoUser = {
+    id: 'demo-user',
+    nombre: 'Usuario Demo',
+    mail: 'demo@cruma.local'
+  };
 
   useEffect(() => {
+    if (USE_MOCKS) {
+      setUsuario(demoUser);
+      setLoading(false);
+      return;
+    }
+
     // Si hay parámetro ?logout= en la URL, no verificar sesión
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('logout')) {
@@ -22,6 +34,11 @@ export function AuthProvider({ children }) {
   }, []);
 
   const verificarSesion = async () => {
+    if (USE_MOCKS) {
+      setUsuario(demoUser);
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       const response = await api.get('/auth/me');
@@ -43,6 +60,11 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    if (USE_MOCKS) {
+      setUsuario(null);
+      sessionStorage.clear();
+      return;
+    }
     try {
       setUsuario(null);
       await api.post('/auth/logout');
@@ -57,12 +79,18 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const loginDemo = useCallback(() => {
+    if (!USE_MOCKS) return;
+    setUsuario(demoUser);
+  }, [demoUser]);
+
   const value = {
     usuario,
     loading,
     isAuthenticated: !!usuario,
     verificarSesion,
     logout,
+    loginDemo: USE_MOCKS ? loginDemo : undefined,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
