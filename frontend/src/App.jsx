@@ -8,27 +8,29 @@ import { Correlativas } from './pages/correlativas'
 import Perfil from './pages/perfil'
 import ProtectedRoute from './components/ProtectedRoute'
 import Header from './components/Header'
+import BotonCafecito from './components/CafecitoButton'
 
 function App() {
-  
+
 
   return (
     <>
       <Header />
+      <BotonCafecito />
       <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path='/seleccionar-materias' element={<SeleccionarMaterias/>}/>
-        <Route path='/armar' element={<Armar/>}/>
-        <Route 
-          path='/perfil' 
+        <Route path='/seleccionar-materias' element={<SeleccionarMaterias />} />
+        <Route path='/armar' element={<Armar />} />
+        <Route
+          path='/perfil'
           element={
             <ProtectedRoute>
-              <Perfil/>
+              <Perfil />
             </ProtectedRoute>
           }
         />
-        <Route path='/correlativas' element={<Correlativas/>}/>
+        <Route path='/correlativas' element={<Correlativas />} />
       </Routes>
     </>
   )

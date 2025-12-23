@@ -100,21 +100,3 @@ export const materiasMockCorrelativas = [
     requiereAprobadas: [{ id: 12, nombre: "Probabilidad y Estadística" }, { id: 19, nombre: "Base de Datos" }]
   }
 ];
-
-// Formato normalizado que imita la respuesta del backend
-export const materiasMockApi = materiasMock.map((m) => ({
-  id: m.id,
-  codigo: m.codigo,
-  nombre: m.nombre,
-  anioCarrera: m.nivel,
-  electiva: false,
-  requiereRegularIds: m.requiereRegular || [],
-  requiereAprobadaIds: m.requiereAprobadas || []
-}));
-
-// Correlativas en el formato usado por el servicio de correlativas
-export const correlativasMockApi = materiasMock.map((m) => ({
-  materiaId: m.id,
-  requiereRegularIds: m.requiereRegular || [],
-  requiereAprobadaIds: m.requiereAprobadas || []
-}));

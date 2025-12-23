@@ -18,19 +18,19 @@ export const CartaMateria = ({ materia, estadoVisual, onClick }) => {
     };
 
     return (
-        <div 
-            className={`subject-card estado-${estadoVisual}`} 
+        <div
+            className={`subject-card estado-${estadoVisual}`}
             onClick={() => onClick && onClick(materia)}
         >
             <div className="correlativas-tooltip">
                 {correlativasText()}
             </div>
-            <div className="d-flex justify-content-between align-items-start">
+            <div style={{ paddingTop: '1.2rem', paddingRight: '3.5rem' }}>
                 <span style={{ fontSize: '0.8rem' }}>{materia.nombre}</span>
-                <span className={`status-badge badge-${estadoVisual}`}>
-                    {getBadgeLabel(estadoVisual)}
-                </span>
             </div>
+            <span className={`status-badge badge-${estadoVisual}`}>
+                {getBadgeLabel(estadoVisual)}
+            </span>
         </div>
     );
 };

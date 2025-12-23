@@ -18,9 +18,6 @@ import { useErrorHandler } from '../hooks/useErrorHandler'
 import { logger } from '../utils/logger'
 import { convertirNombreADia } from '../utils/dateUtils'
 import AppModal from '../components/AppModal'
-import { USE_MOCKS } from '../utils/env'
-import { materiasMockApi } from '../mocks/materiasMocks'
-import { comisionesMock } from '../mocks/comisionesMock'
 
 // Estilos para el PDF
 const styles = StyleSheet.create({
@@ -111,7 +108,7 @@ export default function Armar() {
   const [infoModalMessage, setInfoModalMessage] = useState('');
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorModalMessage, setErrorModalMessage] = useState('');
-  
+
   // Estados para tooltips de materias
   const [hoveredMateriaId, setHoveredMateriaId] = useState(null);
   const [tooltipTimeout, setTooltipTimeout] = useState(null);
@@ -611,11 +608,6 @@ export default function Armar() {
 
   useEffect(() => {
     if (materiaIds.length > 0) {
-      if (USE_MOCKS) {
-        const data = materiasMockApi.filter(m => materiaIds.includes(m.id));
-        setAllMaterias(data);
-        return;
-      }
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
       const params = materiaIds.join(',');
       fetch(`${apiUrl}/api/materias/seleccionadas?ids=${params}`)
@@ -636,15 +628,10 @@ export default function Armar() {
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
         const comisionesAcumuladas = [];
         for (let materiaId of materiaIds) {
-          let data = [];
-          if (USE_MOCKS) {
-            data = comisionesMock.filter(c => c.materiaId === materiaId);
-          } else {
-            const res = await fetch(
-              `${apiUrl}/api/materias/${materiaId}/comisiones`
-            );
-            data = await res.json();
-          }
+          const res = await fetch(
+            `${apiUrl}/api/materias/${materiaId}/comisiones`
+          );
+          const data = await res.json();
           // Transformar los horarios: convertir diaSemana (nombre) a dia (número)
           const comisionesTransformadas = data.map(comision => ({
             ...comision,
@@ -886,124 +873,124 @@ export default function Armar() {
         boxSizing: 'border-box'
       }}>
 
-      {/* Panel principal del cronograma */}
-      <div
-        style={{
-          flex: window.innerWidth <= 768 ? 'none' : '1 1 0%',
-          minWidth: 0,
-          minHeight: window.innerWidth <= 768 ? '50vh' : 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          justifyContent: 'flex-start',
-          padding: window.innerWidth <= 768 ? '0.5rem' : '0.5vw 1vw 1.5vw 1.5vw',
-          boxSizing: 'border-box'
-        }}
-      >
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '5px',
-          padding: '0 8px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', position: 'relative' }}>
-            <h4 style={{ margin: 0, fontSize: window.innerWidth <= 768 ? '1rem' : '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                <path d="M7 2a1 1 0 0 0-1 1v1H5a3 3 0 0 0-3 3v11a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3h-1V3a1 1 0 1 0-2 0v1H8V3a1 1 0 0 0-1-1Zm12 6H5v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8Zm-1-3a1 1 0 0 1 1 1v1H5V6a1 1 0 0 1 1-1h1v1a1 1 0 1 0 2 0V5h6v1a1 1 0 1 0 2 0V5h1Z"/>
-              </svg>
-              Cronograma
-            </h4>
-            {fixedBlocks.length > 0 && (
-              <AppButton
-                variant="danger"
-                size="sm"
-                onClick={clearAllBlocks}
-                title="Limpiar todo el cronograma"
-                style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
-              >
-                <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
-                  <path d="M30 6.749h-5.331l-3.628-5.442c-0.228-0.337-0.609-0.556-1.041-0.557h-8c-0 0-0 0-0 0-0.432 0-0.813 0.219-1.037 0.552l-0.003 0.004-3.628 5.442h-5.332c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25v0h2.858l1.897 20.864c0.060 0.64 0.594 1.137 1.245 1.137 0 0 0 0 0.001 0h16c0 0 0 0 0 0 0.65 0 1.184-0.497 1.243-1.132l0-0.005 1.897-20.864h2.859c0.69 0 1.25-0.56 1.25-1.25s-0.56-1.25-1.25-1.25v0zM12.669 3.25h6.661l2.333 3.499h-11.327zM22.859 28.75h-13.718l-1.772-19.5 17.262-0.001zM11 10.75c-0.69 0-1.25 0.56-1.25 1.25v0 14c0 0.69 0.56 1.25 1.25 1.25s1.25-0.56 1.25-1.25v0-14c0-0.69-0.56-1.25-1.25-1.25v0zM16 10.75c-0.69 0-1.25 0.56-1.25 1.25v0 14c0 0.69 0.56 1.25 1.25 1.25s1.25-0.56 1.25-1.25v0-14c0-0.69-0.56-1.25-1.25-1.25v0zM21 10.75c-0.69 0-1.25 0.56-1.25 1.25v14c0 0.69 0.56 1.25 1.25 1.25s1.25-0.56 1.25-1.25v0-14c-0-0.69-0.56-1.25-1.25-1.25h-0z"/>
+        {/* Panel principal del cronograma */}
+        <div
+          style={{
+            flex: window.innerWidth <= 768 ? 'none' : '1 1 0%',
+            minWidth: 0,
+            minHeight: window.innerWidth <= 768 ? '50vh' : 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            justifyContent: 'flex-start',
+            padding: window.innerWidth <= 768 ? '0.5rem' : '0.5vw 1vw 1.5vw 1.5vw',
+            boxSizing: 'border-box'
+          }}
+        >
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '5px',
+            padding: '0 8px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', position: 'relative' }}>
+              <h4 style={{ margin: 0, fontSize: window.innerWidth <= 768 ? '1rem' : '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M7 2a1 1 0 0 0-1 1v1H5a3 3 0 0 0-3 3v11a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3h-1V3a1 1 0 1 0-2 0v1H8V3a1 1 0 0 0-1-1Zm12 6H5v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8Zm-1-3a1 1 0 0 1 1 1v1H5V6a1 1 0 0 1 1-1h1v1a1 1 0 1 0 2 0V5h6v1a1 1 0 1 0 2 0V5h1Z" />
                 </svg>
-                Limpiar
-              </AppButton>
-            )}
-            {isAuthenticated && fixedBlocks.length > 0 && (
+                Cronograma
+              </h4>
+              {fixedBlocks.length > 0 && (
+                <AppButton
+                  variant="danger"
+                  size="sm"
+                  onClick={clearAllBlocks}
+                  title="Limpiar todo el cronograma"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+                    <path d="M30 6.749h-5.331l-3.628-5.442c-0.228-0.337-0.609-0.556-1.041-0.557h-8c-0 0-0 0-0 0-0.432 0-0.813 0.219-1.037 0.552l-0.003 0.004-3.628 5.442h-5.332c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25v0h2.858l1.897 20.864c0.060 0.64 0.594 1.137 1.245 1.137 0 0 0 0 0.001 0h16c0 0 0 0 0 0 0.65 0 1.184-0.497 1.243-1.132l0-0.005 1.897-20.864h2.859c0.69 0 1.25-0.56 1.25-1.25s-0.56-1.25-1.25-1.25v0zM12.669 3.25h6.661l2.333 3.499h-11.327zM22.859 28.75h-13.718l-1.772-19.5 17.262-0.001zM11 10.75c-0.69 0-1.25 0.56-1.25 1.25v0 14c0 0.69 0.56 1.25 1.25 1.25s1.25-0.56 1.25-1.25v0-14c0-0.69-0.56-1.25-1.25-1.25v0zM16 10.75c-0.69 0-1.25 0.56-1.25 1.25v0 14c0 0.69 0.56 1.25 1.25 1.25s1.25-0.56 1.25-1.25v0-14c0-0.69-0.56-1.25-1.25-1.25v0zM21 10.75c-0.69 0-1.25 0.56-1.25 1.25v14c0 0.69 0.56 1.25 1.25 1.25s1.25-0.56 1.25-1.25v0-14c-0-0.69-0.56-1.25-1.25-1.25h-0z" />
+                  </svg>
+                  Limpiar
+                </AppButton>
+              )}
+              {isAuthenticated && fixedBlocks.length > 0 && (
+                <AppButton
+                  variant="success"
+                  size="sm"
+                  onClick={guardarCronogramaEnBackend}
+                  disabled={guardandoCronograma}
+                  style={{ marginLeft: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  title="Guardar cronograma en tu perfil"
+                >
+                  {guardandoCronograma ? (
+                    'Guardando...'
+                  ) : (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                        <polyline points="17 21 17 13 7 13 7 21" />
+                        <polyline points="7 3 7 8 15 8" />
+                      </svg>
+                      Guardar
+                    </>
+                  )}
+                </AppButton>
+              )}
+            </div>
+            {window.innerWidth > 768 && (
               <AppButton
-                variant="success"
+                variant="secondary"
                 size="sm"
-                onClick={guardarCronogramaEnBackend}
-                disabled={guardandoCronograma}
-                style={{ marginLeft: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}
-                title="Guardar cronograma en tu perfil"
+                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                style={{
+                  fontSize: '1.1rem',
+                  padding: '3px 6px',
+                  minWidth: '35px',
+                  height: '35px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                title={sidebarCollapsed ? 'Mostrar panel de materias' : 'Ocultar panel de materias'}
               >
-                {guardandoCronograma ? (
-                  'Guardando...'
-                ) : (
-                  <>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                      <polyline points="17 21 17 13 7 13 7 21"/>
-                      <polyline points="7 3 7 8 15 8"/>
-                    </svg>
-                    Guardar
-                  </>
-                )}
+                ☰
               </AppButton>
             )}
           </div>
-          {window.innerWidth > 768 && (
-            <AppButton
-              variant="secondary"
-              size="sm"
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              style={{
-                fontSize: '1.1rem',
-                padding: '3px 6px',
-                minWidth: '35px',
-                height: '35px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              title={sidebarCollapsed ? 'Mostrar panel de materias' : 'Ocultar panel de materias'}
-            >
-              ☰
-            </AppButton>
-          )}
+
+          <div
+            className="schedule-grid-wrapper"
+            style={{
+              flex: 1,
+              minHeight: 0,
+              overflow: 'auto',
+              borderRadius: 8,
+              padding: window.innerWidth <= 768 ? '0.5rem' : '0.75rem',
+              border: '1px solid var(--border-color, #e5e7eb)',
+              backgroundColor: 'var(--bg-primary, #ffffff)',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
+            }}
+          >
+            <ScheduleGrid
+              id="schedule-grid"
+              fixedBlocks={fixedBlocks}
+              previewBlocks={previewBlocks}
+              onBlockClick={onBlockSelect}
+              onBlockRemove={onBlockRemove}
+              allMaterias={allMaterias}
+              allComisiones={allComisiones}
+              materiaScheduleInfo={selectedMaterias.reduce((acc, m) => {
+                acc[m.id] = {
+                  ...getMateriaScheduleInfo(m.id),
+                  color: getMateriaColor(m.id)
+                };
+                return acc;
+              }, {})}
+            />
+          </div>
         </div>
-        
-        <div 
-          className="schedule-grid-wrapper"
-          style={{
-            flex: 1,
-            minHeight: 0,
-            overflow: 'auto',
-            borderRadius: 8,
-            padding: window.innerWidth <= 768 ? '0.5rem' : '0.75rem',
-            border: '1px solid var(--border-color, #e5e7eb)',
-            backgroundColor: 'var(--bg-primary, #ffffff)',
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
-          }}
-        >
-          <ScheduleGrid
-            id="schedule-grid"
-            fixedBlocks={fixedBlocks}
-            previewBlocks={previewBlocks}
-            onBlockClick={onBlockSelect}
-            onBlockRemove={onBlockRemove}
-            allMaterias={allMaterias}
-            allComisiones={allComisiones}
-            materiaScheduleInfo={selectedMaterias.reduce((acc, m) => {
-              acc[m.id] = {
-                ...getMateriaScheduleInfo(m.id),
-                color: getMateriaColor(m.id)
-              };
-              return acc;
-            }, {})}
-          />
-        </div>
-      </div>
 
         {/* Sidebar de materias */}
         {(!sidebarCollapsed || window.innerWidth <= 768) && (
@@ -1167,7 +1154,7 @@ export default function Armar() {
                     .map(m => {
                       const hasHorarios = materiaHasHorarios(m.id);
                       return (
-                        <div 
+                        <div
                           key={m.id}
                           style={{ position: 'relative', marginBottom: 8 }}
                           onMouseEnter={() => {
@@ -1252,11 +1239,11 @@ export default function Armar() {
                 style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="16" y1="13" x2="8" y2="13"/>
-                  <line x1="16" y1="17" x2="8" y2="17"/>
-                  <polyline points="10 9 9 9 8 9"/>
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                  <polyline points="10 9 9 9 8 9" />
                 </svg>
                 PDF
               </AppButton>
@@ -1266,11 +1253,11 @@ export default function Armar() {
                 style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <rect x="8" y="12" width="8" height="7"/>
-                  <line x1="8" y1="15" x2="16" y2="15"/>
-                  <line x1="12" y1="12" x2="12" y2="19"/>
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <rect x="8" y="12" width="8" height="7" />
+                  <line x1="8" y1="15" x2="16" y2="15" />
+                  <line x1="12" y1="12" x2="12" y2="19" />
                 </svg>
                 Excel
               </AppButton>

@@ -14,7 +14,7 @@
 .levels-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap; 
+  flex-wrap: nowrap;
   gap: 1rem;
   overflow-x: auto;
   padding-bottom: 1rem;
@@ -74,23 +74,43 @@
 .subject-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px var(--shadow);
-  z-index: 10;
+  z-index: 5000;
   border-color: var(--text-tertiary);
 }
 
 /* Colores de estado */
-.subject-card.estado-0 { background: #ffebee; border-left-color: #f44336; opacity: 0.8; cursor: not-allowed; }
-.subject-card.estado-1 { background: #e3f2fd; border-left-color: #2196F3; }
-.subject-card.estado-2 { background: #fff9c4; border-left-color: #FFC107; }
-.subject-card.estado-3 { background: #c8e6c9; border-left-color: #4CAF50; }
+.subject-card.estado-0 {
+  background: #ffebee;
+  border-left-color: #f44336;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.subject-card.estado-1 {
+  background: #e3f2fd;
+  border-left-color: #2196F3;
+}
+
+.subject-card.estado-2 {
+  background: #fff9c4;
+  border-left-color: #FFC107;
+}
+
+.subject-card.estado-3 {
+  background: #c8e6c9;
+  border-left-color: #4CAF50;
+}
 
 /* Badge estado */
 .status-badge {
-  font-size: 0.3rem;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 0.65rem;
   font-weight: 700;
-  padding: 2px 6px;
+  padding: 3px 8px;
   border-radius: 4px;
-  margin-left: 5px;
+  z-index: 5;
 }
 
 .badge-0 {
@@ -119,7 +139,7 @@
 .correlativas-tooltip {
   display: none;
   position: absolute;
-  bottom: 100%;
+  bottom: calc(100% - 25px);
   left: 50%;
   transform: translateX(-50%);
   background: var(--bg-primary);
@@ -130,14 +150,14 @@
   font-size: 0.75rem;
   width: max-content;
   max-width: 200px;
-  z-index: 20;
+  z-index: 6000;
   white-space: pre-wrap;
   box-shadow: 0 4px 12px var(--shadow);
+  pointer-events: none;
 }
 
 .subject-card:hover .correlativas-tooltip {
   display: block;
-
 }
 
 .level-column-electivas {
